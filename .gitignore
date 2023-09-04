@@ -2,4 +2,4 @@
 /.idea
 roammates_backend/__pycache__/
 db.sqlite3
-#benji_portfolio/.env
+roammates_backend/media/
