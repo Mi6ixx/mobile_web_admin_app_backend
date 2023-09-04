@@ -1,7 +1,7 @@
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
-from PIL import Image
 from phonenumber_field.modelfields import PhoneNumberField
-
+from .accountmanager  import MyAccountManager
 
 # Create your models here.
 class Lodge(models.Model):
@@ -12,15 +12,26 @@ class Lodge(models.Model):
     rent_rate = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
     caretaker_number = PhoneNumberField(null=False, blank=False, unique=True)
     description = models.TextField(null=False, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
 
 
-class AdminUserRegistration(models.Model):
-    username = models.CharField(max_length=30, unique=True, null=False, blank=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
-    password = models.CharField(max_length=128, null=False, blank=False)  # Store the password securely (e.g., hashed)
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=30, unique=True, blank=False, null=False)
+    email = models.EmailField(unique=True, blank=False, null=False)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+    objects = MyAccountManager()
 
     def __str__(self):
-        return self.username
+        return self.email
