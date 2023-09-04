@@ -4,20 +4,24 @@ from .validators import validate_image_size
 
 
 class LodgeSerializer(serializers.ModelSerializer):
-    # Define a custom ImageField form field
-    images = serializers.ImageField(max_length=None, use_url=True,
-                                    validators=[validate_image_size])  # use_url=True to display image URLs
 
     class Meta:
         model = Lodge
         fields = ['name', 'location', 'images', 'total_rooms', 'rent_rate', 'caretaker_number', 'description']
 
-class AdminUserRegistration(serializers.ModelSerializer):
+class AdminUserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'password']
 
+    def create(self, validated_data):
+        return CustomUser.objects.create_admin(**validated_data)
 
-class AdminUserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=30)
-    password = serializers.CharField(max_length=128)
+
+class AdminUserLoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(max_length=30, required=True, write_only=True)
+    password = serializers.CharField(max_length=128, required=True, write_only=True)
+
+    # class Meta:
+    #     model = CustomUser
+    #     fields = ['username', 'password']
