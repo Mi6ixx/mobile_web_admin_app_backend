@@ -43,11 +43,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party apps
     'rest_framework',
-    'web_admin_backend',
-    'mobile_backend',
     'corsheaders',
     'drf_yasg',
+    'djoser',
+    
+    # local apps
+    'web_admin_backend',
+    'mobile_backend',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -116,6 +121,17 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+# JWT AUTHENTICATION
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 
