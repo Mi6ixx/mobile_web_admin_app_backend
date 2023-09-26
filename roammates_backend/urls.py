@@ -37,8 +37,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('web_admin_backend/', include('web_admin_backend.urls')),
-    path("mobile/", include("mobile_backend.urls")),
+    # path('web_admin_backend/', include('web_admin_backend.urls')),
+    # path("mobile/", include("mobile_backend.urls")),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0),

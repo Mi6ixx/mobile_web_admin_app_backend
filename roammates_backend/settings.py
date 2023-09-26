@@ -51,9 +51,10 @@ INSTALLED_APPS = [
     'djoser',
     
     # local apps
-    'web_admin_backend',
-    'mobile_backend.apps.MobileBackendConfig',
-    'users'
+    # 'web_admin_backend',
+    # 'mobile_backend',
+    'users',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -157,7 +158,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'core.CustomUser'
 
 DJOSER = {
     'SERIALIZERS': {
