@@ -19,32 +19,23 @@ from django.conf.urls.static import static
 from django.urls import include
 from django.urls import path, re_path
 from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-
-schema_view = get_schema_view(
-    openapi.Info(
-        title="Roammates Web Admin API",
-        default_version="v1",
-        description="Backend for lodge listings",
-        terms_of_service="https://www.yourwebsite.com/terms/",
-        contact=openapi.Contact(email="contact@yourwebsite.com"),
-        license=openapi.License(name="Your License"),
-    ),
-    public=True,
-    permission_classes=[permissions.AllowAny],
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger/', SpectacularSwaggerView.as_view(), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
+    # application urls
     # path('web_admin_backend/', include('web_admin_backend.urls')),
-    # path("mobile/", include("mobile_backend.urls")),
+    path("mobile/", include("mobile_backend.urls")),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0),
-            name='schema-json'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
 if settings.DEBUG:
