@@ -15,7 +15,7 @@ class LodgeViewSets(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return only lodge objects for the request user"""
-        return self.queryset.filter(user=self.request.user).ordre_by('-id')
+        return self.queryset.filter(user=self.request.user).order_by('-id')
 
     def perform_create(self, serializer):
         """Create a new lodges for a specific authenticated user"""
