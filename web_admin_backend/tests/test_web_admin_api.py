@@ -16,8 +16,8 @@ def detail_url(lodge_id):
 def create_user(**params):
     """Create and return user"""
     defaults = {
-        'email': 'test@example.com',
-        'password': 'testpass123',
+        'email': 'kodi@example.com',
+        'password': 'dffpass123',
         'phone': '08106671579',
         'user_type': 'STUDENT',
         'first_name': 'ookofk',
@@ -31,7 +31,6 @@ def create_user(**params):
 def create_lodge(user, **params):
     """Create and return lodge"""
     defaults = {
-        'user': user,
         'name': 'St.Domininc lodge',
         'location': 'Opposite laurel junction',
         'total_rooms': 23,
@@ -62,7 +61,7 @@ class PrivateStudentApiTests(TestCase):
         self.user = create_user()
         self.client.force_authenticate(user=self.user)
 
-    def test__retrieve_lodge_success(self):
+    def test_retrieve_lodge_success(self):
         """Test the lodge retrieve endpoint"""
         create_lodge(user=self.user)
         create_lodge(user=self.user, name='dsdsds', caretaker_number='09012345679')
@@ -76,7 +75,7 @@ class PrivateStudentApiTests(TestCase):
 
     def test_lodge_list_limited_to_user(self):
         """ Double-checking listing of lodge is limited to only authenticated user"""
-        other_user = create_user(email='test2@example.com', password='testoadfss123')
+        other_user = create_user(email='teWWst2@example.com', password='testoadfss123')
         create_lodge(user=other_user)
         create_lodge(user=self.user)
 

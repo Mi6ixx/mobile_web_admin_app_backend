@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 def create_user(**params):
     """Create and return user"""
     defaults = {
-        'email': 'test@example.com',
+        'email': 'fessdsdt@example.com',
         'password': 'testpass123',
         'phone': '08106671579',
         'user_type': 'STUDENT',
