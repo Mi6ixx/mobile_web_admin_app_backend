@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'djoser',
 
     # local apps
-    # 'web_admin_backend',
+    'web_admin_backend',
     'mobile_backend',
     'users',
     'core',

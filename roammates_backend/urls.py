@@ -32,7 +32,7 @@ urlpatterns = [
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
     # application urls
-    # path('web_admin_backend/', include('web_admin_backend.urls')),
+    path('web_admin_backend/', include('web_admin_backend.urls')),
     path("mobile/", include("mobile_backend.urls")),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
