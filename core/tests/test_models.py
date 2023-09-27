@@ -13,6 +13,8 @@ def create_user(**params):
         'password': 'testpass123',
         'phone': '08106671579',
         'user_type': 'STUDENT',
+        'first_name': 'ookofk',
+        'last_name': 'ojodfjdj'
     }
     defaults.update(params)
     user = get_user_model().objects.create_user(**defaults)
