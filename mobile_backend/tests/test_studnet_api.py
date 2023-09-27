@@ -9,9 +9,11 @@ from mobile_backend.serializers import StudentSerializer
 # STUDENT_URL = reverse('student:create')
 STUDENT_URL = reverse('student:student-list')
 
+
 def detail_url(student_id):
     """Create and return a student detail url"""
     return reverse('student:student-detail', args=[student_id])
+
 
 def create_user(**params):
     """Create and return user"""
@@ -27,6 +29,7 @@ def create_user(**params):
     user = get_user_model().objects.create_user(**defaults)
     return user
 
+
 def create_student(user, **params):
     defaults = {
         'department': 'science edu',
@@ -37,6 +40,7 @@ def create_student(user, **params):
     student = models.Student.objects.create(user=user, **defaults)
 
     return student
+
 
 class PublicRecipeApiTests(TestCase):
     """Testing unauthenticated API requests"""
@@ -131,6 +135,3 @@ class PrivateStudentApiTests(TestCase):
         res = self.client.delete(url, format='json')
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(models.Student.objects.filter(user=self.user).exists())
-
-
-

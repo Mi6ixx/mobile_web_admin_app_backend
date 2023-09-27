@@ -16,5 +16,3 @@ class StudentViewSets(mixins.UpdateModelMixin,
     serializer_class = StudentSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-
-

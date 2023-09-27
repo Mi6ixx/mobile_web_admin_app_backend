@@ -37,9 +37,9 @@ class Student(models.Model):
     )
     department = models.CharField(max_length=100, null=True)
     year_of_admission = models.IntegerField(validators=[
-            MinValueValidator(1900),
-            MaxValueValidator(2100),
-        ], null=True)
+        MinValueValidator(1900),
+        MaxValueValidator(2100),
+    ], null=True)
     gender = models.CharField(max_length=20, choices=Gender.choices, blank=True, null=True)
 
     def clean(self):
