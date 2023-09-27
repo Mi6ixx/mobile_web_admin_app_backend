@@ -16,6 +16,7 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=11)
     user_type = models.CharField(max_length=20, choices=UserType.choices, blank=True, null=True)
     is_admin = models.BooleanField(default=False)
+    lodges = models.ManyToManyField('Lodge')
 
     objects = CustomUserManager()
 
@@ -51,3 +52,26 @@ class Student(models.Model):
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
+
+
+class Lodge(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=100, null=False, blank=False, unique=True)
+    location = models.CharField(max_length=255, null=False, blank=False)
+    total_rooms = models.IntegerField()
+    rent_rate = models.IntegerField(null=False, blank=False)
+    caretaker_number = models.CharField(max_length=11, null=False, blank=False, unique=True)
+    description = models.TextField(max_length=255, null=False, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Lodge"
+        verbose_name_plural = "Lodges"
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return self.name
