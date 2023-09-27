@@ -6,10 +6,7 @@ from core import models
 from django.contrib.auth import get_user_model
 from mobile_backend.serializers import StudentSerializer
 
-# STUDENT_URL = reverse('student:create')
 STUDENT_URL = reverse('student:student-list')
-
-
 def detail_url(student_id):
     """Create and return a student detail url"""
     return reverse('student:student-detail', args=[student_id])
