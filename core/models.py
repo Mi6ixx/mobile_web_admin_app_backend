@@ -55,7 +55,7 @@ class Student(models.Model):
 
 
 class Lodge(models.Model):
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
