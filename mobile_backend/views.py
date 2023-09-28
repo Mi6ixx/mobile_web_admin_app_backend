@@ -6,9 +6,11 @@ from .serializers import StudentSerializer, StudentImageSerializer
 from core.models import Student
 from rest_framework.decorators import action
 
+
 # Create your views here.
 class StudentViewSets(mixins.UpdateModelMixin,
                       mixins.ListModelMixin,
+                      mixins.RetrieveModelMixin,
                       mixins.DestroyModelMixin,
                       viewsets.GenericViewSet):
     """View to manage students"""
@@ -22,6 +24,17 @@ class StudentViewSets(mixins.UpdateModelMixin,
             return StudentImageSerializer
         return self.serializer_class
 
+    def update(self, request, *args, **kwargs):
+        # Get the student instance
+        student = self.get_object()
+
+        # Check if the user making the request is the owner of the student object
+        if student.user != request.user:
+            return Response(
+                {"detail": "You do not have permission to update this student."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
     @action(methods=['POST', 'PUT', 'DELETE'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
         """Upload image for a student object"""
@@ -30,10 +43,15 @@ class StudentViewSets(mixins.UpdateModelMixin,
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            # Return the appropriate status code based on the HTTP method
+            if request.method == 'POST':
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            elif request.method == 'PUT':
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            elif request.method == 'DELETE':
+                return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, serializer):
         """Create a new recipe for a specific authenticated user"""
         serializer.save(user=self.request.user)
-
