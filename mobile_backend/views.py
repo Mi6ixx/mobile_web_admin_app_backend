@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .serializers import StudentSerializer, StudentImageSerializer
 from core.models import Student
 from rest_framework.decorators import action
+from .permission import IsOwnerOfStudent
 
 
 # Create your views here.
@@ -17,23 +18,12 @@ class StudentViewSets(mixins.UpdateModelMixin,
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOfStudent]
 
     def get_serializer_class(self):
         if self.action == 'upload_image':
             return StudentImageSerializer
         return self.serializer_class
-
-    def update(self, request, *args, **kwargs):
-        # Get the student instance
-        student = self.get_object()
-
-        # Check if the user making the request is the owner of the student object
-        if student.user != request.user:
-            return Response(
-                {"detail": "You do not have permission to update this student."},
-                status=status.HTTP_403_FORBIDDEN
-            )
 
     @action(methods=['POST', 'PUT', 'DELETE'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
