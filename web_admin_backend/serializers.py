@@ -16,5 +16,9 @@ class LodgeSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
-
+class LodgeImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lodge
+        fields = ['id', 'image']
+        read_only_fields = ['id']
 
