@@ -5,8 +5,14 @@ from django.utils.translation import gettext as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from .managers import CustomUserManager
+import os
+import uuid
+def object_image_file(instance, filename):
+    """Generate filename for new object image"""
+    ext = os.path.splitext(filename)[1]
+    filename = f'{uuid.uuid4()}{ext}'
 
-
+    return os.path.join('uploads', 'recipe', filename)
 class CustomUser(AbstractUser):
     class UserType(models.TextChoices):
         STUDENT = "STUDENT", "student"
@@ -42,6 +48,7 @@ class Student(models.Model):
         MaxValueValidator(2100),
     ], null=True)
     gender = models.CharField(max_length=20, choices=Gender.choices, blank=True, null=True)
+    image = models.ImageField(null=True, blank=True, upload_to=object_image_file)
 
     def clean(self):
         super().clean()
@@ -52,6 +59,9 @@ class Student(models.Model):
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
+
+
+
 
 
 class Lodge(models.Model):
