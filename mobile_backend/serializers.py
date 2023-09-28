@@ -9,3 +9,9 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ['id', 'department', 'year_of_admission', 'gender']
         read_only_fields = ['id']
+
+class StudentImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['id', 'image']
+        read_only_fields = ['id']
