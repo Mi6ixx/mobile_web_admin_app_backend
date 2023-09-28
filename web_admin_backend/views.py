@@ -1,5 +1,5 @@
 from rest_framework import viewsets, mixins, status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -10,7 +10,7 @@ from .serializers import LodgeSerializer
 class LodgeViewSets(viewsets.ModelViewSet):
     queryset = Lodge.objects.all()
     serializer_class = LodgeSerializer
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
