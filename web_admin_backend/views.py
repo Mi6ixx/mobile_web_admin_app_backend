@@ -5,13 +5,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from core.models import Lodge
 from .serializers import LodgeSerializer
+from .permissions import IsAdminOrStaffUser
 
 # Create your views here.
 class LodgeViewSets(viewsets.ModelViewSet):
     queryset = Lodge.objects.all()
     serializer_class = LodgeSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminOrStaffUser]
 
     def get_queryset(self):
         """Return only lodge objects for the request user"""
