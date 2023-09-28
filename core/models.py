@@ -7,12 +7,15 @@ from django.conf import settings
 from .managers import CustomUserManager
 import os
 import uuid
+
+
 def object_image_file(instance, filename):
     """Generate filename for new object image"""
     ext = os.path.splitext(filename)[1]
     filename = f'{uuid.uuid4()}{ext}'
+    return os.path.join('uploads', 'student', filename)
 
-    return os.path.join('uploads', 'recipe', filename)
+
 class CustomUser(AbstractUser):
     class UserType(models.TextChoices):
         STUDENT = "STUDENT", "student"
@@ -22,7 +25,6 @@ class CustomUser(AbstractUser):
     phone = models.CharField(max_length=11)
     user_type = models.CharField(max_length=20, choices=UserType.choices, blank=True, null=True)
     is_admin = models.BooleanField(default=False)
-    lodges = models.ManyToManyField('Lodge')
 
     objects = CustomUserManager()
 
@@ -59,9 +61,6 @@ class Student(models.Model):
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
-
-
-
 
 
 class Lodge(models.Model):
