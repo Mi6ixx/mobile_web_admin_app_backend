@@ -5,3 +5,4 @@ from .models import CustomUser, Student, Lodge
 admin.site.register(CustomUser)
 admin.site.register(Student)
 admin.site.register(Lodge)
+

@@ -9,12 +9,17 @@ import os
 import uuid
 
 
-def object_image_file(instance, filename):
+def student_image_file(instance, filename):
     """Generate filename for new object image"""
     ext = os.path.splitext(filename)[1]
     filename = f'{uuid.uuid4()}{ext}'
     return os.path.join('uploads', 'student', filename)
 
+def lodge_image_file(instance, filename):
+    """Generate filename for new object image"""
+    ext = os.path.splitext(filename)[1]
+    filename = f'{uuid.uuid4()}{ext}'
+    return os.path.join('uploads', 'lodge', filename)
 
 class CustomUser(AbstractUser):
     class UserType(models.TextChoices):
@@ -50,7 +55,7 @@ class Student(models.Model):
         MaxValueValidator(2100),
     ], null=True)
     gender = models.CharField(max_length=20, choices=Gender.choices, blank=True, null=True)
-    image = models.ImageField(null=True, blank=True, upload_to=object_image_file)
+    image = models.ImageField(null=True, blank=True, upload_to=student_image_file)
 
     def clean(self):
         super().clean()
@@ -74,6 +79,7 @@ class Lodge(models.Model):
     rent_rate = models.IntegerField(null=False, blank=False)
     caretaker_number = models.CharField(max_length=11, null=False, blank=False, unique=True)
     description = models.TextField(max_length=255, null=False, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to=lodge_image_file)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -84,3 +90,6 @@ class Lodge(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
