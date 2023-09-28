@@ -83,6 +83,7 @@ class Lodge(models.Model):
     caretaker_number = models.CharField(max_length=11, null=False, blank=False, unique=True)
     description = models.TextField(max_length=255, null=False, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to=lodge_image_file)
+    amenities = models.ManyToManyField('LodgeAmenity')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -90,6 +91,17 @@ class Lodge(models.Model):
         verbose_name = "Lodge"
         verbose_name_plural = "Lodges"
         ordering = ('-created_at',)
+
+    def __str__(self):
+        return self.name
+
+class LodgeAmenity(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
