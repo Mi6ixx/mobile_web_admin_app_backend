@@ -55,7 +55,7 @@ class StudentReviewViewSet(mixins.ListModelMixin,
     queryset = LodgeReview.objects.all()
     serializer_class = StudentReviewSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOfStudent]
 
     def get_queryset(self):
         """Return tags for only the authenticated user"""
