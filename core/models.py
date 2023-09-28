@@ -15,11 +15,13 @@ def student_image_file(instance, filename):
     filename = f'{uuid.uuid4()}{ext}'
     return os.path.join('uploads', 'student', filename)
 
+
 def lodge_image_file(instance, filename):
     """Generate filename for new object image"""
     ext = os.path.splitext(filename)[1]
     filename = f'{uuid.uuid4()}{ext}'
     return os.path.join('uploads', 'lodge', filename)
+
 
 class CustomUser(AbstractUser):
     class UserType(models.TextChoices):
@@ -71,7 +73,8 @@ class Student(models.Model):
 class Lodge(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
     )
     name = models.CharField(max_length=100, null=False, blank=False, unique=True)
     location = models.CharField(max_length=255, null=False, blank=False)
@@ -92,4 +95,22 @@ class Lodge(models.Model):
         return self.name
 
 
+class LodgeReview(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    lodge = models.OneToOneField(
+        Lodge,
+        on_delete=models.CASCADE
+    )
+    rating = models.IntegerField(validators=[
+        MinValueValidator(1),
+        MaxValueValidator(5),
+    ], null=True, blank=False)
+    comment = models.CharField(max_length=255, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.lodge.name
