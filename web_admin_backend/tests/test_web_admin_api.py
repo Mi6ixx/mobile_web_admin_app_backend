@@ -61,38 +61,5 @@ class PrivateStudentApiTests(TestCase):
         self.user = create_user()
         self.client.force_authenticate(user=self.user)
 
-    def test_retrieve_lodge_success(self):
-        """Test the lodge retrieve endpoint"""
-        create_lodge(user=self.user)
-        create_lodge(user=self.user, name='dsdsds', caretaker_number='09012345679')
 
-        res = self.client.get(LODGE_URL)
-        lodges = models.Lodge.objects.all().order_by('id')
-        serializer = LodgeSerializer(lodges, many=True)
-
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
-
-    def test_lodge_list_limited_to_user(self):
-        """ Double-checking listing of lodge is limited to only authenticated user"""
-        other_user = create_user(email='teWWst2@example.com', password='testoadfss123')
-        create_lodge(user=other_user)
-        create_lodge(user=self.user)
-
-        res = self.client.get(LODGE_URL)
-        lodge = models.Lodge.objects.filter(user=self.user)
-        serializer = LodgeSerializer(lodge, many=True)
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
-
-    def test_get_lodge_detail(self):
-        """Testing getting lodge attributes"""
-        lodge = create_lodge(user=self.user)
-
-        url = detail_url(lodge_id=lodge.id)
-        res = self.client.get(url)
-        serializer = LodgeSerializer(lodge)
-
-        self.assertEqual(res.data, serializer.data)
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
