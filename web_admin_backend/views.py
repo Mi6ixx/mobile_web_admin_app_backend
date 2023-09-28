@@ -3,8 +3,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from core.models import Lodge
-from .serializers import LodgeSerializer, LodgeImageSerializer
+from core.models import Lodge, LodgeAmenity
+from .serializers import LodgeSerializer, LodgeImageSerializer, LodgeAmenitySerializer
 from .permissions import IsAdminOrStaffUser
 
 
@@ -44,3 +44,17 @@ class LodgeViewSets(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new lodges for a specific authenticated user"""
         serializer.save(user=self.request.user)
+
+class AmenityViewSets(mixins.UpdateModelMixin,
+                      mixins.ListModelMixin,
+                      mixins.DestroyModelMixin,
+                      viewsets.GenericViewSet):
+    queryset = LodgeAmenity.objects.all()
+    serializer_class = LodgeAmenitySerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminOrStaffUser]
+
+    def get_queryset(self):
+        """Return tags for only the authenticated user"""
+        return self.queryset.filter(user=self.request.user).order_by('-id')
+
