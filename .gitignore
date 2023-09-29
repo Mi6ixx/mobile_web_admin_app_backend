@@ -2,5 +2,5 @@
 /.idea
 roammates_backend/__pycache__/
 db.sqlite3
-web_admin_backend/__pycache__/
-mobile_backend/__pycache__/
+roammates_backend/web_admin_backend/__pycache__/
+roammates_backend/mobile_backend/__pycache__/
