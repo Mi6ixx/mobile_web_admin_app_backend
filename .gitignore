@@ -3,3 +3,5 @@
 roammates_backend/__pycache__/
 db.sqlite3
 roammates_backend/media/
+web_admin_backend/__pycache__/
+mobile_backend/__pycache__/
