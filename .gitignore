@@ -1,5 +1,6 @@
 /venv
 /.idea
+roammates_backend/.env
 roammates_backend/__pycache__/
 db.sqlite3
 roammates_backend/web_admin_backend/__pycache__/
