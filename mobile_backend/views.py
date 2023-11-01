@@ -92,9 +92,10 @@ class StudentReviewViewSet(mixins.ListModelMixin,
 class FriendRequestViewSet(viewsets.GenericViewSet):
     queryset = FriendRequest.objects.all()
     serializer_class = FriendRequestSerializer
+    authentication_classes = [JWTAuthentication]
 
-    @action(detail=True, methods=['POST'])
-    def send_request(self, request, pk=None):
+    @action(detail=False, methods=['POST'])
+    def send_request(self, request):
         """
         Send a friend request to a user.
         """
@@ -112,7 +113,7 @@ class FriendRequestViewSet(viewsets.GenericViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Create a new friend request
-        friend_request = FriendRequest.objects.create(from_user=from_user, to_user=to_user, status='pending')
+        friend_request = FriendRequest.objects.create(from_user=from_user, to_user=to_user)
         serializer = self.get_serializer(friend_request)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

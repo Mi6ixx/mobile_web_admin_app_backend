@@ -121,7 +121,7 @@ class FriendRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.from_user} -> {self.to_user}'
+        return f'{self.from_user.username} -> {self.to_user.username}'
 
 
 class Lodge(models.Model):

@@ -10,11 +10,13 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = ['id', 'department', 'year_of_admission', 'gender']
         read_only_fields = ['id']
 
+
 class StudentImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['id', 'image']
         read_only_fields = ['id']
+
 
 class StudentReviewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,5 +30,3 @@ class FriendRequestSerializer(serializers.ModelSerializer):
         model = FriendRequest
         fields = ['id', 'from_user', 'to_user', 'status']
         read_only_fields = ['id']
-
-
