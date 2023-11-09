@@ -8,6 +8,7 @@ class LodgeAmenitySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
         read_only_fields = ['id']
 
+
 class LodgeSerializer(serializers.ModelSerializer):
     amenities = LodgeAmenitySerializer(many=True, required=False)
 
@@ -59,4 +60,3 @@ class LodgeImageSerializer(serializers.ModelSerializer):
         model = Lodge
         fields = ['id', 'image']
         read_only_fields = ['id']
-
