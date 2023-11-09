@@ -21,6 +21,42 @@ class FriendRequestList(APIView):
         return Response(serializer.data)
 
 
+class PendingFriendRequestList(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        #       Retrieve all pending friend request to the user
+        pending_friend_request = FriendRequest.objects.filter(to_user=user, status='pending')
+        serializer = FriendRequestSerializer(pending_friend_request, many=True)
+        return Response(serializer.data)
+
+
+class AcceptedFriendRequestList(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        #       Retrieve all accepted friend request to the user
+        accepted_friend_request = FriendRequest.objects.filter(to_user=user, status='accepted')
+        serializer = FriendRequestSerializer(accepted_friend_request, many=True)
+        return Response(serializer.data)
+
+
+class DeclinedFriendRequestList(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        #       Retrieve all declined friend request to the user
+        declined_friend_request = FriendRequest.objects.filter(to_user=user, status='declined')
+        serializer = FriendRequestSerializer(declined_friend_request, many=True)
+        return Response(serializer.data)
+
+
 class SendFriendRequest(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
@@ -59,6 +95,37 @@ class AcceptFriendRequest(APIView):
         except FriendRequest.DoesNotExist:
             return Response("Friend request not found or already accepted/declined", status=status.HTTP_404_NOT_FOUND)
 
-        friend_request.status = 'accepted'
-        friend_request.save()
+        FriendRequest.objects.filter(pk=friend_request_id).update(status='accepted')
         return Response("Friend request accepted", status=status.HTTP_200_OK)
+
+
+class DeclineFriendRequest(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, friend_request_id):
+        user = request.user
+        try:
+            friend_request = FriendRequest.objects.get(pk=friend_request_id, to_user=user, status='pending')
+        except FriendRequest.DoesNotExist:
+            return Response("Friend request not found or already accepted/declined", status=status.HTTP_404_NOT_FOUND)
+
+        FriendRequest.objects.filter(pk=friend_request_id).update(status='declined')
+        return Response("Friend request declined", status=status.HTTP_200_OK)
+
+
+class RemoveFriendRequest(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, friend_request_id):
+        user = request.user
+        try:
+            friend_request = FriendRequest.objects.get(pk=friend_request_id, from_user=user, status='pending')
+        except FriendRequest.DoesNotExist:
+            return Response("Friend request not found or already accepted/declined", status=status.HTTP_404_NOT_FOUND)
+
+        friend_request.delete()
+        return Response("Friend request removed", status=status.HTTP_204_NO_CONTENT)
+
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk5NjE0NDI1LCJqdGkiOiI3MGUwM2RhMzAzZDQ0ODI2ODAxZmU2MGU4YmRkYzE4MCIsInVzZXJfaWQiOjF9.JRzpsSmKO-tl5fgfCBPnb2e5O4N4IukXKwREUU-0xfI
