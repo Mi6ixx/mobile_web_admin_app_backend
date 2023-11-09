@@ -121,7 +121,7 @@ class RemoveFriendRequest(APIView):
     def delete(self, request, friend_request_id):
         user = request.user
         try:
-            friend_request = FriendRequest.objects.get(pk=friend_request_id, from_user=user, status='pending')
+            friend_request = FriendRequest.objects.get(pk=friend_request_id, from_user=user)
         except FriendRequest.DoesNotExist:
             return Response("Friend request not found or already accepted/declined", status=status.HTTP_404_NOT_FOUND)
 
