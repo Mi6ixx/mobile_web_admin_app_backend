@@ -25,8 +25,4 @@ class StudentReviewSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
-class FriendRequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FriendRequest
-        fields = ['id', 'from_user', 'to_user', 'status']
-        read_only_fields = ['id']
+

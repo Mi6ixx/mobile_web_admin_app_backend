@@ -34,6 +34,7 @@ urlpatterns = [
     # application urls
     path('web_admin_backend/', include('web_admin_backend.urls')),
     path("mobile/", include("mobile_backend.urls")),
+    path("friends/", include("friends.urls")),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
 ]

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     # local apps
     'web_admin_backend',
+    'friends',
     'mobile_backend',
     'users',
     'core',
